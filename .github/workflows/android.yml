@@ -9,15 +9,10 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       - name: Descargar proyecto
         uses: actions/checkout@v4
-
-      - name: Configurar Godot
-        uses: chickensoft-games/setup-godot@v2
-        with:
-          version: 4.3.0
-          use-dotnet: false
 
       - name: Configurar Java
         uses: actions/setup-java@v4
@@ -27,6 +22,18 @@ jobs:
 
       - name: Configurar Android SDK
         uses: android-actions/setup-android@v3
+
+      - name: Aceptar licencias Android
+        run: yes | sdkmanager --licenses || true
+
+      - name: Instalar herramientas Android
+        run: sdkmanager "platform-tools" "platforms;android-34" "build-tools;34.0.0"
+
+      - name: Configurar Godot
+        uses: chickensoft-games/setup-godot@v2
+        with:
+          version: 4.3.0
+          use-dotnet: false
 
       - name: Verificar archivos
         run: |
